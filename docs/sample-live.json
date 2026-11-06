@@ -1,0 +1,86 @@
+{
+ "state": "running",
+ "startedAt": "2026-01-05T15:00:00.000Z",
+ "updatedAt": "2026-01-05T15:06:00.000Z",
+ "tracks": {
+  "shopper": {
+   "name": "Shopper",
+   "done": 61,
+   "total": 120,
+   "passes": 61,
+   "fails": 0,
+   "skips": 0,
+   "now": {
+    "size": "phone",
+    "step": "checkout: pay with a test card"
+   },
+   "grade": "A+",
+   "score": 100,
+   "why": "61 of 61 steps passed.",
+   "problems": [],
+   "known": [],
+   "lastPasses": []
+  },
+  "staff": {
+   "name": "Staff",
+   "done": 140,
+   "total": 300,
+   "passes": 136,
+   "fails": 4,
+   "skips": 0,
+   "now": {
+    "size": "desktop",
+    "step": "reports: export"
+   },
+   "grade": "B",
+   "score": 97,
+   "why": "136 of 140 steps passed.",
+   "problems": [
+    {
+     "status": "FAIL",
+     "money": false,
+     "size": "phone",
+     "step": "settings: save button is off the screen",
+     "detail": ""
+    },
+    {
+     "status": "FAIL",
+     "money": false,
+     "size": "landscape",
+     "step": "team: invite box won't close",
+     "detail": ""
+    }
+   ],
+   "known": [
+    "low-contrast-links"
+   ],
+   "lastPasses": []
+  },
+  "admin": {
+   "name": "Admin",
+   "done": 30,
+   "total": 70,
+   "passes": 29,
+   "fails": 1,
+   "skips": 0,
+   "now": {
+    "size": "desktop",
+    "step": "prices: edit a plan"
+   },
+   "grade": "F",
+   "score": 97,
+   "why": "Failed a money check: prices: new price didn't save.",
+   "problems": [
+    {
+     "status": "FAIL",
+     "money": true,
+     "size": "desktop",
+     "step": "prices: new price didn't save",
+     "detail": ""
+    }
+   ],
+   "known": [],
+   "lastPasses": []
+  }
+ }
+}

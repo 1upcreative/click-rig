@@ -1,0 +1,7 @@
+{
+  "name": "click-rig",
+  "version": "0.1.0",
+  "description": "A paper exam beside the chat: each test track's progress, errors and red-marker grade, live.",
+  "types": "./types/index.d.ts",
+  "license": "MIT"
+}

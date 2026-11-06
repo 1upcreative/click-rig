@@ -1,0 +1,12 @@
+{
+  "name": "click-rig",
+  "owner": {
+    "name": "1UP Creative"
+  },
+  "plugins": [
+    {
+      "name": "click-rig",
+      "source": "./"
+    }
+  ]
+}
