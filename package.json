@@ -1,0 +1,19 @@
+{
+  "name": "click-rig",
+  "version": "0.2.0",
+  "private": false,
+  "type": "module",
+  "description": "Fake people clicking real screens in a real browser, graded like a paper exam.",
+  "license": "MIT",
+  "exports": {
+    "./runner": "./runner/index.mjs",
+    "./runner/selftest": "./runner/selftest.mjs"
+  },
+  "files": [
+    "runner"
+  ],
+  "dependencies": {
+    "axe-core": "4.10.3",
+    "playwright-core": "1.55.0"
+  }
+}

@@ -4,7 +4,10 @@ Your browser tests, graded like a 1980s paper exam. A sheet of notebook paper si
 
 ![The exam sheet mid-run](docs/exam.png)
 
-The mod doesn't run tests. Your test rig writes one small JSON file as it goes, in any language, and the sheet draws it.
+This repo holds two things:
+
+- **The sheet**, a mod for Claude Code. It runs no tests. Any test rig writes one small JSON file as it goes, in any language, and the sheet draws it.
+- **The runner** (`runner/`), a test rig of its own: fake people clicking real screens in a real browser, with every screen checked for sideways scroll, covered buttons, contrast, console errors and more. Start with [runner/README.md](runner/README.md).
 
 ## Install
 

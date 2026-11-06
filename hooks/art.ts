@@ -14,7 +14,7 @@ const LINE = 24
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 const cut = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1)}…` : s)
-const SIZE: Record<string, string> = { desktop: 'desk', phone: '320', landscape: 'side' }
+const SIZE: Record<string, string> = { desktop: 'desk', phone: 'phone', small: '320', landscape: 'side' }
 
 export type Faces = Record<string, string | undefined>
 
