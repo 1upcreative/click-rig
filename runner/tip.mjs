@@ -7,20 +7,33 @@ const git = (cwd, ...args) => execFileSync("git", args, { cwd, encoding: "utf8",
 const lines = (text) => text.split("\n").filter(Boolean);
 const lockOf = (cwd, rev) => { try { return git(cwd, "rev-parse", `${rev}:package-lock.json`); } catch { return ""; } };
 
-/** Files the tip adds that sit untracked in the checkout, such as a file a dev server wrote. Git refuses to check out over them. */
+/**
+ * What git would refuse to check out over, such as files a dev server wrote: untracked files the tip adds,
+ * and local edits to files the tip changes.
+ */
 function clashes(tree, sha) {
-  const added = lines(git(tree, "diff", "--name-only", "--diff-filter=A", "HEAD", sha));
-  return added.filter((file) => existsSync(join(tree, file)));
+  const added = lines(git(tree, "diff", "--name-only", "--diff-filter=A", "HEAD", sha)).filter((file) => existsSync(join(tree, file)));
+  const changed = new Set(lines(git(tree, "diff", "--name-only", "HEAD", sha)));
+  const edited = lines(git(tree, "diff", "--name-only", "HEAD")).filter((file) => changed.has(file) && existsSync(join(tree, file)));
+  return { added, edited };
 }
 
-/** Moves clashing files aside instead of deleting them, under .rig-aside/<time>/ in the checkout. */
-function moveAside(tree, files) {
+/** Keeps a copy of each clashing file under .rig-aside/<time>/ in the checkout, never deletes one. */
+function moveAside(tree, { added, edited }) {
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-  for (const file of files) {
+  const keep = (file) => {
     const to = join(tree, ".rig-aside", stamp, file);
     mkdirSync(dirname(to), { recursive: true });
-    renameSync(join(tree, file), to);
+    return to;
+  };
+  for (const file of added) {
+    renameSync(join(tree, file), keep(file));
     console.log(`moved aside ${file}: the tip tracks it (in ${join(".rig-aside", stamp)})`);
+  }
+  for (const file of edited) {
+    copyFileSync(join(tree, file), keep(file));
+    git(tree, "checkout", "-q", "HEAD", "--", file);
+    console.log(`set aside a local edit to ${file}: the tip changes it (in ${join(".rig-aside", stamp)})`);
   }
 }
 
@@ -40,7 +53,7 @@ export async function prepareTip(ref, { repo, tree, localFiles = [], modules = [
   else {
     installed = existsSync(stampFile) ? readFileSync(stampFile, "utf8").trim() : lockOf(tree, "HEAD");
     const blocked = clashes(tree, sha);
-    if (blocked.length) moveAside(tree, blocked);
+    if (blocked.added.length || blocked.edited.length) moveAside(tree, blocked);
     git(tree, "checkout", "-q", "--detach", sha);
   }
   for (const file of localFiles) if (!existsSync(join(tree, file))) copyFileSync(join(repo, file), join(tree, file));

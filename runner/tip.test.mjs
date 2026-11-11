@@ -43,6 +43,19 @@ test("a generated file the tip starts tracking is moved aside, not deleted", asy
   assert.equal(readFileSync(aside, "utf8"), "written by a dev server\n");
 });
 
+test("a local edit to a file the tip changes is kept aside, then the tip checks out", async () => {
+  const p = project();
+  const first = p.commit("types", { "next-env.d.ts": "one\n" });
+  await quiet(() => prepareTip(first, { repo: p.repo, tree: p.tree }));
+  writeFileSync(join(p.tree, "next-env.d.ts"), "a dev server rewrote me\n");
+  const next = p.commit("types moved", { "next-env.d.ts": "two\n" });
+  await quiet(() => prepareTip(next, { repo: p.repo, tree: p.tree }));
+  assert.equal(sh(p.tree, "rev-parse", "HEAD"), next);
+  assert.equal(readFileSync(join(p.tree, "next-env.d.ts"), "utf8"), "two\n");
+  const aside = execFileSync("find", [join(p.tree, ".rig-aside"), "-name", "next-env.d.ts"], { encoding: "utf8" }).trim();
+  assert.equal(readFileSync(aside, "utf8"), "a dev server rewrote me\n");
+});
+
 test("packages reinstall only when the lockfile changes, after beforeInstall", async () => {
   const p = project();
   let calls = 0;
