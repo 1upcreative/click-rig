@@ -1,6 +1,6 @@
 {
   "name": "click-rig",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": false,
   "type": "module",
   "description": "Fake people clicking real screens in a real browser, graded like a paper exam.",

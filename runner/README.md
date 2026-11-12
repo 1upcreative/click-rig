@@ -121,6 +121,8 @@ Throw `Outside` from a step when another company's service didn't play along. Th
 
 Flags: `--exam <name>`, `--size <size>`, `--tip <ref>` and `--tree <folder>` (your run script decides what those two do, with `prepareTip`), `--no-seed`, `--stop`, `--max-min <n>`.
 
+`prepareTip(ref, { repo, tree, modules, beforeInstall })` puts a commit in a checkout of its own. It only installs packages when the lockfile changed, and calls `beforeInstall` first so you can stop servers watching that folder. Files a dev server left in the way are moved to `.rig-aside/`, never deleted.
+
 ## Known issues
 
 `knownFile` lists real problems you've found and haven't fixed:
